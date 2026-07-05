@@ -7,21 +7,21 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // 1. Fetch baseline status from the local Express server
-    fetch('http://localhost:5000/')
+    // 1. Fetch baseline status from the live Render web service
+    fetch('https://hyper-neural-fabric-backend.onrender.com/')
       .then(res => res.json())
       .then(data => {
         setStatus(`${data.status}: ${data.message} (${data.intellectStatus})`);
       })
       .catch(() => {
-        setStatus('Backend Server Offline (Ensure server.js is running on port 5000)');
+        setStatus('Production Backend Server Unreachable (Warming up or connection blocked)');
       });
 
-    // 2. Establish local WebSocket connection for real-time streaming
-    const ws = new WebSocket('ws://localhost:5000');
+    // 2. Establish live production WebSocket connection (using secure wss:// protocol)
+    const ws = new WebSocket('wss://hyper-neural-fabric-backend.onrender.com');
     
     ws.onopen = () => {
-      console.log('Websocket connection established locally.');
+      console.log('Websocket production synchronization active.');
     };
 
     ws.onmessage = (event) => {
